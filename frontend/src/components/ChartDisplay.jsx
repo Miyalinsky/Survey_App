@@ -1,62 +1,93 @@
 import React, { useEffect, useState } from 'react';
-import { Chart, registerables } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function ChartDisplay() {
-    const [chartData, setChartData] = useState(null);
-
-    Chart.register(...registerables);
+    const [ageData, setAgeData] = useState([]);
+    const [psqiData, setPsqiData] = useState([]);
 
     useEffect(() => {
-        async function fetchData() {
+        const fetchData = async () => {
             try {
                 const response = await axios.get('http://localhost/Survey_App/backend/api/fetchResults.php');
                 const data = response.data;
 
-                // 年齢を10歳ごとのビンに分割してカウント
-                const bins = Array(10).fill(0);
-                data.forEach(entry => {
-                    const age = entry.age;
-                    if (age >= 10 && age < 20) bins[0]++;
-                    else if (age >= 20 && age < 30) bins[1]++;
-                    else if (age >= 30 && age < 40) bins[2]++;
-                    else if (age >= 40 && age < 50) bins[3]++;
-                    else if (age >= 50 && age < 60) bins[4]++;
-                    else if (age >= 60 && age < 70) bins[5]++;
-                    else if (age >= 70 && age < 80) bins[6]++;
-                    else if (age >= 80 && age < 90) bins[7]++;
-                    else if (age >= 90 && age < 100) bins[8]++;
-                });
+                // 年齢データの収集
+                const ages = data.map(item => item.age);
+                setAgeData(ages);
 
-                // 横軸のラベル（ビンの範囲）
-                const labels = [
-                    '10-19', '20-29', '30-39', '40-49',
-                    '50-59', '60-69', '70-79', '80-89', '90-99'
-                ];
+                // PSQIスコアデータの収集
+                const psqiScores = data.map(item => item.total_psqi_score);
+                setPsqiData(psqiScores);
 
-                // Chart.js用のデータをセット
-                setChartData({
-                    labels,
-                    datasets: [
-                        {
-                            label: 'Age Distribution',
-                            data: bins,
-                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                        },
-                    ],
-                });
             } catch (error) {
                 console.error('データ取得エラー:', error);
             }
-        }
+        };
 
         fetchData();
     }, []);
 
+    const createHistogram = (data, label, color, binSize, min, max) => {
+        // ヒストグラムのビン（区間）を設定
+        const bins = Array.from({ length: Math.ceil((max - min + 1) / binSize) }, (_, i) => min + i * binSize);
+        const counts = new Array(bins.length).fill(0);
+
+        data.forEach(value => {
+            if (value >= min && value <= max) {
+                const binIndex = Math.floor((value - min) / binSize);
+                counts[binIndex]++;
+            }
+        });
+
+        return {
+            labels: bins,
+            datasets: [
+                {
+                    label: label,
+                    data: counts,
+                    backgroundColor: color,
+                },
+            ],
+        };
+    };
+
+    const ageHistogramData = createHistogram(ageData, 'Age Distribution', 'rgba(75, 192, 192, 0.6)', 1, 0, 100);
+    const psqiHistogramData = createHistogram(psqiData, 'PSQI Score Distribution', 'rgba(153, 102, 255, 0.6)', 1, 0, 21);
+
     return (
         <div>
-            {chartData && <Bar data={chartData} options={{ scales: { x: { beginAtZero: true }, y: { beginAtZero: true } } }} />}
+            <h2>Age Distribution</h2>
+            <Bar
+                data={ageHistogramData}
+                options={{
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 100
+                        },
+                        y: { beginAtZero: true }
+                    }
+                }}
+            />
+            <h2>PSQI Score Distribution</h2>
+            <Bar
+                data={psqiHistogramData}
+                options={{
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 21
+                        },
+                        y: { beginAtZero: true }
+                    }
+                }}
+            />
         </div>
     );
 }
