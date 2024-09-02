@@ -27,6 +27,7 @@ function ResultsTable() {
                     <th>Email</th>
                     <th>Name</th>
                     <th>Age</th>
+                    <th>PSQI score</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,6 +40,7 @@ function ResultsTable() {
                             <td>{result.email}</td>
                             <td>{result.name}</td>
                             <td>{result.age}</td>
+                            <td>{result.total_psqi_score}</td>
                         </tr>
                     );
                 })}
