@@ -12,11 +12,11 @@ function App() {
 
     return (
         <div>
-            <h1>アンケートアプリ</h1>
+            <h1>ピッツバーグ睡眠質問票（PSQI）</h1>
             <SurveyForm onFormSubmit={handleFormSubmit} />
-            <h2>アンケート結果</h2>
+            <h2>結果テーブル</h2>
             <ResultsTable key={refresh} />
-            <h2>年齢分布グラフ</h2>
+            <h2>結果ヒストグラム</h2>
             <ChartDisplay key={refresh} />
         </div>
     );

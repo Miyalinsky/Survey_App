@@ -60,7 +60,7 @@ function ChartDisplay() {
 
     return (
         <div>
-            <h2>Age Distribution</h2>
+            <h2>回答者年齢</h2>
             <Bar
                 data={ageHistogramData}
                 options={{
@@ -74,7 +74,7 @@ function ChartDisplay() {
                     }
                 }}
             />
-            <h2>PSQI Score Distribution</h2>
+            <h2>回答者PSQIスコア</h2>
             <Bar
                 data={psqiHistogramData}
                 options={{

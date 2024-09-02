@@ -93,6 +93,8 @@ function SurveyForm() {
                 <input type="number" name="age" value={formData.age} onChange={handleChange} required />
             </div>
 
+            <h3>過去1ヶ月間における、あなたの通常の睡眠の習慣についておたずねします。過去1ヶ月間について大部分の日の昼と夜を考えて、以下の質問項目にできる限り正確にお答えください。</h3>
+
             <div>
                 <label>問1. 過去1ヶ月間において、通常何時ごろ寝床につきましたか？</label>
                 <select name="bedtimeHour" value={formData.bedtimeHour} onChange={handleChange}>
@@ -145,6 +147,8 @@ function SurveyForm() {
                     ))}
                 </select>
             </div>
+
+            <h4>過去1ヶ月間において、どれくらいの頻度で、以下の理由のために睡眠が困難でしたか？最もあてはまるものを1つ選んでください。</h4>
 
             <div>
                 <label>問5-a. 寝床についてから30分以内に眠ることができなかったから。</label>
@@ -376,6 +380,8 @@ function SurveyForm() {
                     </label>
                 </div>
             </div>
+
+            <br />
 
             <div>
                 <label>問6. 過去1ヶ月間において、ご自分の睡眠の質を全体として、どのように評価しますか？</label>
