@@ -31,6 +31,8 @@ function Histogram3D() {
         const engine = new BABYLON.Engine(canvas, true);
         const scene = new BABYLON.Scene(engine);
 
+        scene.clearColor = new BABYLON.Color4(0.9, 0.9, 0.9, 1);
+
         const camera = new BABYLON.ArcRotateCamera('camera1', -Math.PI / 2, Math.PI / 3, 100, BABYLON.Vector3.Zero(), scene);
         camera.attachControl(canvas, true);
         const light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 0), scene);
