@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SurveyForm from './components/SurveyForm';
 import ResultsTable from './components/ResultsTable';
 import ChartDisplay from './components/ChartDisplay';
+import Histogram3D from './components/Histogram3D';
 
 function App() {
     const [refresh, setRefresh] = useState(false);
@@ -18,6 +19,8 @@ function App() {
             <ResultsTable key={refresh} />
             <h2>結果ヒストグラム</h2>
             <ChartDisplay key={refresh} />
+            <h2>3Dヒストグラム</h2>
+            <Histogram3D key={refresh} />
         </div>
     );
 }
